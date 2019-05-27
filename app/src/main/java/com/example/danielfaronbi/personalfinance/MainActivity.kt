@@ -1,7 +1,6 @@
 package com.example.danielfaronbi.personalfinance
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -18,12 +17,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
@@ -31,6 +24,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+        displayScreen(-1)
     }
 
     override fun onBackPressed() {
@@ -57,22 +51,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        when (item.itemId) {
+    fun displayScreen(id: Int){
+        val fragment = when (id) {
             R.id.nav_home -> {
-                // Handle the camera action
+                homeFragment()
             }
             R.id.nav_income -> {
-
+                incomeFragment()
             }
             R.id.nav_expense -> {
-
+                expenseFragment()
             }
             R.id.nav_history -> {
-
+                historyFragment()
+            }
+            else->{
+                homeFragment()
             }
         }
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.relativeLayout, fragment)
+            .commit()
+
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        // Handle navigation view item clicks here.
+        displayScreen(item.itemId)
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
