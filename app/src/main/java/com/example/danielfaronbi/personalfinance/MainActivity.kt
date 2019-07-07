@@ -2,6 +2,7 @@ package com.example.danielfaronbi.personalfinance
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -12,12 +13,16 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    lateinit var homeFragment: homeFragment
+    lateinit var incomeFragment: incomeFragment
+    lateinit var expenseFragment: expenseFragment
+    lateinit var historyFragment: historyFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        displayScreen(-1)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
-        displayScreen(-1)
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
@@ -54,28 +59,49 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun displayScreen(id: Int){
-        val fragment = when (id) {
-            R.id.nav_home -> {
-                homeFragment()
-            }
-            R.id.nav_income -> {
-                incomeFragment()
-            }
-            R.id.nav_expense -> {
-                expenseFragment()
-            }
-            R.id.nav_history -> {
-                historyFragment()
-            }
-            else -> {
-                homeFragment()
-            }
-        }
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.relativeLayout, fragment)
-            .commit()
+                when (id) {
+                 R.id.nav_home -> {
+                    homeFragment = homeFragment()
+                     supportFragmentManager
+                         .beginTransaction()
+                         .replace(R.id.frame_layout, homeFragment)
+                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                         .commit()
+                }
+                R.id.nav_income -> {
+                    incomeFragment = incomeFragment()
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.frame_layout, incomeFragment)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit()
+                }
+                R.id.nav_expense -> {
+                    expenseFragment = expenseFragment()
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.frame_layout, expenseFragment)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit()
+                }
+                R.id.nav_history -> {
+                    historyFragment = historyFragment()
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.frame_layout, historyFragment)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit()
+                }
+                else -> {
+                    homeFragment = homeFragment()
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.frame_layout, homeFragment)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit()
+                }
+        }
 
     }
 
